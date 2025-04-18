@@ -6,8 +6,11 @@ import { fetchWithInterceptor } from "@/lib/fetch-interceptor"
 
 type UserRole = "admin" | "seller"
 type User = {
+  id: string
   name: string
+  email: string
   role: UserRole
+  active: boolean
   token: string
 } | null
 
@@ -28,12 +31,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Initialize user from localStorage on mount
   useEffect(() => {
-    const role = localStorage.getItem("userRole") as UserRole
+    const id = localStorage.getItem("userId")
     const name = localStorage.getItem("userName")
+    const email = localStorage.getItem("userEmail")
+    const role = localStorage.getItem("userRole") as UserRole
+    const active = localStorage.getItem("userActive") === "true"
     const token = localStorage.getItem("token")
 
-    if (role && name && token) {
-      setUser({ name, role, token })
+    if (id && name && email && role && token) {
+      setUser({ id, name, email, role, active, token })
     }
 
     setIsLoading(false)
@@ -70,24 +76,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
 
     try {
-      const { data, success, message } = await fetchWithInterceptor<{
-        name: string
-        role: UserRole
+      const response = await fetchWithInterceptor<{
+        success: boolean
         token: string
+        user: {
+          id: string
+          name: string
+          email: string
+          role: UserRole
+          active: boolean
+        }
       }>('/users/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
         requiresAuth: false
       })
 
-      if (!success) {
+      if (!response.data.success) {
         return false
       }
-      const userData = { name: data.name, role: data.role as UserRole, token: data.token }
+
+      const userData = {
+        ...response.data.user,
+        token: response.data.token
+      }
 
       setUser(userData)
-      localStorage.setItem('userRole', userData.role)
+      localStorage.setItem('userId', userData.id)
       localStorage.setItem('userName', userData.name)
+      localStorage.setItem('userEmail', userData.email)
+      localStorage.setItem('userRole', userData.role)
+      localStorage.setItem('userActive', String(userData.active))
       localStorage.setItem('token', userData.token)
 
       return true
@@ -101,8 +120,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem("userRole")
+    localStorage.removeItem("userId")
     localStorage.removeItem("userName")
+    localStorage.removeItem("userEmail")
+    localStorage.removeItem("userRole")
+    localStorage.removeItem("userActive")
     localStorage.removeItem("token")
     router.push("/login")
   }
