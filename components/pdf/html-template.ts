@@ -2,6 +2,7 @@ import { ManualProduct, OptionProduct, Product } from "../pricing/type";
 import { formatDate } from "@/lib/utils";
 
 export interface PdfData {
+  discount: string;
   offerNumber: number;
   date: string;
   validUntil: string;
@@ -25,6 +26,7 @@ const formatPrice = (price: number): string => {
 export const htmlTemplate = (data: PdfData) => {
   // Helper function to safely handle undefined or null values
   const safeString = (value: any): string => value || '';
+  console.log(data)
   
   // Helper function to safely handle package data
   const renderPackageSection = () => {
@@ -73,11 +75,9 @@ export const htmlTemplate = (data: PdfData) => {
         <div style="width: 20%; text-align: right;">
           <div style="display: flex; flex-direction: column; align-items: flex-end;">
             <div style="position: relative; margin-bottom: 2px;">
-              <span style="color: #808080; position: relative; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px;">
-                <span style="position: relative; display: inline-block;">
-                  <span style="position: relative; z-index: 1;">${formatPrice(data.package.price)},-</span>
-                  <span style="position: absolute; left: 0; right: 0; top: 50%; height: 1px; background-color: #808080; z-index: 2;"></span>
-                </span>
+              <span style="position: relative; display: inline-block; color: #808080; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px;">
+                ${formatPrice(data.package.price)},-
+                <span style="position: absolute; left: 0; right: 0; top: 75%; height: 1.5px; background-color: #808080; transform: translateY(-50%);"></span>
               </span>
             </div>
             <div>
@@ -162,13 +162,16 @@ export const htmlTemplate = (data: PdfData) => {
             .map((val) => `<div style="display: flex;">
               <span style="min-width: 15px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">•</span>
               <span style="padding-left: 5px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">${val.name} 
-                <span style="color: #808080; text-decoration: line-through;">${formatPrice(Number(val.price))},-</span>
+                <span style="position: relative; display: inline-block; color: #808080; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px; margin-right: 4px;">
+                  ${formatPrice(Number(val.price))},-
+                  <span style="position: absolute; left: 0; right: 0; top: 75%; height: 1.5px; background-color: #808080; transform: translateY(-50%);"></span>
+                </span>
                 ${val.discountPrice
                   ? `<span style="color: #FF0000; font-weight: 600;">${formatPrice(
                       Number(val.price) - Number(val.discountPrice)
                     )},-${
                       val.discountEndDate
-                        ? `<span style="font-style: italic;">(Kampanje ${val.discountEndDate})</span>`
+                        ? `<span style="font-style: italic;">(Kampanje ${formatDate(val.discountEndDate)})</span>`
                         : ''
                     }</span>`
                   : ""
@@ -217,7 +220,7 @@ export const htmlTemplate = (data: PdfData) => {
               <div style="width: 15%; text-align: right; font-family: 'Inter', sans-serif;">${formatPrice(_product.discount || 0)},-</div>
               <div style="width: 15%; text-align: right; font-family: 'Inter', sans-serif;">${_product.vat} %</div>
               <div style="width: 20%; text-align: right; font-family: 'Inter', sans-serif;">
-                <p style="margin: 0; color: #777;">${formatPrice(_product.price)},-</p>
+                <p style="margin: 0; color: #777;">${formatPrice(_product.totalPrice)},-</p>
               </div>
             </div>
             <div style="border-top: 1px solid #ddd; margin-top: 10px;"></div>
@@ -228,14 +231,16 @@ export const htmlTemplate = (data: PdfData) => {
     
     <div style="display: flex; margin-top: 70px; margin-left: 20px; margin-right: 20px; font-size: 14px; page-break-inside: avoid; page-break-before: auto; padding-top: 30px;">
       <div style="width: 60%; padding-right: 20px;">
+        ${data.terms ? `
         <div style="background-color: #FBFCFE; padding: 20px; border-radius: 16px; border: 1px solid #EFF2F5;">
           <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #363C45 !important;">${safeString(data.terms)}</p>
         </div>
+        ` : ''}
       </div>
       
       <div style="width: 40%; background-color: #FBFCFE; padding: 20px; border-radius: 16px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-          <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Rabatt</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Rabatt ${data.discount}%</div>
           <div style="font-family: 'Inter'; font-size: 14px; font-weight: 500; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.additionalDiscount)},-</div>
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">

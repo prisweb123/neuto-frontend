@@ -105,6 +105,8 @@ export default function PricingForm({
 
         if (mainResponse.success) {
           setAllPackages(mainResponse.data)
+          console.log(allPackages)
+
         }
 
         if (optionResponse.success) {

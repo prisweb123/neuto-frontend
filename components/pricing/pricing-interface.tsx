@@ -76,7 +76,8 @@ export default function PricingInterface({ offerId }: { offerId: string | null }
         date: new Date().toLocaleDateString("nb-NO"),
         validUntil: getValidUntilDate(validDays),
         createdBy: data.createdBy.username,
-        terms: terms || "Please pay within 15 days from the date of invoice.",
+        terms: terms || "",
+        discount: discount,
         VatValue: totals.VATValue,
         total: totals.total,
         campaignDiscount: totals.campaignDiscount,
@@ -137,7 +138,7 @@ export default function PricingInterface({ offerId }: { offerId: string | null }
               <span className="font-small">{totals.VATValue.toLocaleString()},00,-</span>
             </div>
             <div className="flex justify-between py-1">
-              <span className="text-sm">Rabatt AND PROSENT ({discount}%):</span>
+              <span className="text-sm">Rabatt ({discount}%):</span>
               <span className="font-small">{totals.additionalDiscount.toLocaleString()},00,-</span>
             </div>
             <div className="flex justify-between py-1">

@@ -1,10 +1,16 @@
+/**
+ * Date string in DD/MM/YY format
+ */
+export type DateString = string;
+
 export interface OptionItem {
     id: string
     name: string
     price: string
     discountPrice?: string
     isActive: boolean
-    discountEndDate?: string
+    /** Date in DD/MM/YY format */
+    discountEndDate?: DateString
     isSelected: boolean
   }
   
@@ -29,7 +35,8 @@ export interface OptionItem {
     markeModels: MarkeModelPair[]
     price: number
     discount?: number
-    endDate?: string
+    /** Date in DD/MM/YY format */
+    endDate?: DateString
     include: string
     info: string
   }
@@ -54,6 +61,7 @@ export interface OptionItem {
     "manualProducts": ManualProduct[],
     "discount": string,
     "terms": string,
+    /** Number of days the offer is valid for */
     "validDays": string,
     "createdBy": {
       "_id": string,

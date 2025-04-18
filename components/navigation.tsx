@@ -98,7 +98,9 @@ export default function Navigation() {
                   />
                 </svg>
               </div>
-              Opprett bruker
+              Brukere
+
+
             </Link>
 
             <Link
@@ -166,8 +168,7 @@ export default function Navigation() {
           >
             <MessageSquare className="h-4 w-4" />
           </div>
-          Oversikt over tilbud
-        </Link>
+          Tilbudsoversikt        </Link>
       </div>
       <div className="w-[1px] h-9 bg-[#1C1C1C] bg-opacity-20 mr-4"></div>
       <div className="flex items-center bg-white rounded-full px-4 py-2">
