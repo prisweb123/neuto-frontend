@@ -16,6 +16,7 @@ interface UserProfile {
   organizationNumber?: string;
   logo?: string;
 }
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SettingPage() {
@@ -44,6 +45,7 @@ export default function SettingPage() {
   useEffect(() => {
     fetchUserProfile();
   }, []);
+
   const fetchUserProfile = async () => {
     try {
       const response = await fetch(`${BASE_URL}/users/me`, {

@@ -6,6 +6,12 @@ import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
 
+export const metadata = {
+  title: 'Netauto',
+  description: 'Netauto Application',
+  generator: 'v0.dev'
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -22,11 +28,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-
-import './globals.css'
-
-export const metadata = {
-      generator: 'v0.dev'
-    };
