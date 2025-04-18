@@ -17,13 +17,20 @@ interface UserProfile {
   logo?: string;
 }
 
+interface PasswordData {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SettingPage() {
   const { user, logout } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [profile, setProfile] = useState<UserProfile>({
-    name: "",
+    name: user?.name || "",
     email: "",
     mobile: "",
     companyName: "",
@@ -34,20 +41,25 @@ export default function SettingPage() {
     organizationNumber: "",
     logo: "",
   });
-  const [passwordData, setPasswordData] = useState({
+
+  const [passwordData, setPasswordData] = useState<PasswordData>({
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
+
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
 
   useEffect(() => {
-    fetchUserProfile();
-  }, []);
+    if (user?.name) {
+      fetchUserProfile();
+    }
+  }, [user?.name]);
 
   const fetchUserProfile = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(`${BASE_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -62,6 +74,8 @@ export default function SettingPage() {
       }
     } catch (error) {
       toast.error("Failed to fetch profile data");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -90,6 +104,7 @@ export default function SettingPage() {
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const formData = new FormData();
       Object.entries(profile).forEach(([key, value]) => {
         if (value) formData.append(key, value);
@@ -109,12 +124,14 @@ export default function SettingPage() {
       const data = await response.json();
       if (data.success) {
         toast.success("Profile updated successfully");
-        fetchUserProfile(); // Refresh profile data
+        fetchUserProfile();
       } else {
         toast.error(data.message || "Failed to update profile");
       }
     } catch (error) {
       toast.error("Failed to update profile");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -126,6 +143,7 @@ export default function SettingPage() {
     }
 
     try {
+      setIsLoading(true);
       const response = await fetch(`${BASE_URL}/users/change-password`, {
         method: "POST",
         headers: {
@@ -151,18 +169,30 @@ export default function SettingPage() {
       }
     } catch (error) {
       toast.error("Failed to change password");
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  if (isLoading) {
+    return (
+      <AdminLayout title="Settings">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
   return (
-    <AdminLayout title="Instillinger">
+    <AdminLayout title="Settings">
       {user?.role === "admin" ? (
         <>
           <form onSubmit={handleProfileSubmit}>
             <div className="grid grid-cols-2 gap-4 mb-6 border rounded-lg p-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Bedriftsnavn
+                  Company Name
                 </label>
                 <input
                   name="companyName"
@@ -170,13 +200,13 @@ export default function SettingPage() {
                   onChange={handleProfileChange}
                   className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
                   type="text"
-                  placeholder="Merhebia Finest AS"
+                  placeholder="Enter company name"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Adresse
+                  Address
                 </label>
                 <input
                   name="address"
@@ -184,13 +214,13 @@ export default function SettingPage() {
                   onChange={handleProfileChange}
                   className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
                   type="text"
-                  placeholder="Vintergata 19"
+                  placeholder="Enter address"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Post nr & By
+                  Postal Code & City
                 </label>
                 <input
                   name="postalCode"
@@ -198,13 +228,13 @@ export default function SettingPage() {
                   onChange={handleProfileChange}
                   className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
                   type="text"
-                  placeholder="3048 Drammen"
+                  placeholder="Enter postal code and city"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Land
+                  Country
                 </label>
                 <input
                   name="country"
@@ -212,13 +242,13 @@ export default function SettingPage() {
                   onChange={handleProfileChange}
                   className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
                   type="text"
-                  placeholder="Norge"
+                  placeholder="Enter country"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  E-post
+                  Email
                 </label>
                 <input
                   name="email"
@@ -226,13 +256,13 @@ export default function SettingPage() {
                   onChange={handleProfileChange}
                   className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
                   type="email"
-                  placeholder="valon@aneainvest.no"
+                  placeholder="Enter email"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Telefon nr
+                  Phone Number
                 </label>
                 <input
                   name="mobile"
@@ -240,12 +270,13 @@ export default function SettingPage() {
                   onChange={handleProfileChange}
                   className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
                   type="text"
-                  placeholder="293851"
+                  placeholder="Enter phone number"
                 />
               </div>
+
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Organisasjonsnummer
+                  Organization Number
                 </label>
                 <input
                   name="organizationNumber"
@@ -253,12 +284,13 @@ export default function SettingPage() {
                   onChange={handleProfileChange}
                   className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
                   type="text"
-                  placeholder="920 922 013 MVA"
+                  placeholder="Enter organization number"
                 />
               </div>
+
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Navn
+                  Name
                 </label>
                 <input
                   name="name"
@@ -266,256 +298,116 @@ export default function SettingPage() {
                   onChange={handleProfileChange}
                   className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
                   type="text"
-                  placeholder="Valon Selimi"
+                  placeholder="Enter name"
                 />
               </div>
             </div>
-            <h1 className="text-lg font-bold mb-2">Logo</h1>
 
-            <div className="grid grid-cols-2 gap-4 mb-6 border rounded-lg p-6">
-              <div className="flex flex-col gap-2">
-                Logo*
-                <div className="flex gap-4">
-                  <div className="border rounded-lg flex justify-center items-center w-full h-full">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleLogoChange}
-                      className="hidden"
-                      id="logo-upload"
-                    />
-                    <label
-                      htmlFor="logo-upload"
-                      className="cursor-pointer font-bold rounded-full px-3 py-1 text-white bg-[#C7DEE2]"
-                    >
-                      +
-                    </label>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <div className="bg-[#1E7B8C] text-white px-2 py-0.5 rounded-md text-sm mr-auto">
-                      Format: JPG, GIF or PNG
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <svg
-                        width="50"
-                        height="50"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9.375 9.375L9.40957 9.35771C9.88717 9.11891 10.4249 9.55029 10.2954 10.0683L9.70458 12.4317C9.57507 12.9497 10.1128 13.3811 10.5904 13.1423L10.625 13.125M17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C5.85786 17.5 2.5 14.1421 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10ZM10 6.875H10.0063V6.88125H10V6.875Z"
-                          stroke="#1C1C1C"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-
-                      <div className="text-[#1E7B8C] text-[14px]">
-                        For best placement on offer page, it is recommended to
-                        upload the file in 500x210 pixels. the uploaded file
-                        will be scaled up/down to fit within the above-mentioned
-                        frames
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-center items-center">
-                {previewUrl && (
-                  <img
-                    src={previewUrl}
-                    alt="Logo preview"
-                    className="max-w-full max-h-32"
+            <div className="mb-6 border rounded-lg p-6">
+              <h2 className="text-lg font-semibold mb-4">Company Logo</h2>
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoChange}
+                    className="hidden"
+                    id="logo-upload"
                   />
+                  <label
+                    htmlFor="logo-upload"
+                    className="cursor-pointer inline-block bg-[#1E7B8C] text-white px-4 py-2 rounded-md"
+                  >
+                    Upload Logo
+                  </label>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Recommended size: 500x210 pixels
+                  </p>
+                </div>
+                {previewUrl && (
+                  <div className="w-32 h-32 border rounded-lg overflow-hidden">
+                    <img
+                      src={previewUrl}
+                      alt="Logo preview"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 )}
               </div>
             </div>
+
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="mt-4 bg-[#1E7B8C] text-white px-4 py-2 rounded-full text-sm"
+                className="bg-[#1E7B8C] text-white px-6 py-2 rounded-md hover:bg-[#1a6b7a] transition-colors"
               >
-                Lagre
+                Save Profile
               </button>
             </div>
           </form>
 
-          <h1 className="text-lg font-bold mb-2">Endre passord</h1>
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold mb-4">Change Password</h2>
+            <form onSubmit={handlePasswordSubmit}>
+              <div className="grid grid-cols-2 gap-4 border rounded-lg p-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Current Password
+                  </label>
+                  <input
+                    name="oldPassword"
+                    value={passwordData.oldPassword}
+                    onChange={handlePasswordChange}
+                    className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                    type="password"
+                    placeholder="Enter current password"
+                  />
+                </div>
 
-          <form onSubmit={handlePasswordSubmit}>
-            <div className="grid md:grid-cols-3 grid-cols-2 gap-4 border rounded-lg p-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Gammel passord
-                </label>
-                <input
-                  name="oldPassword"
-                  value={passwordData.oldPassword}
-                  onChange={handlePasswordChange}
-                  className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="password"
-                  placeholder="Skriv din gamle passord"
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    New Password
+                  </label>
+                  <input
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                    type="password"
+                    placeholder="Enter new password"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nytt passord
-                </label>
-                <input
-                  name="newPassword"
-                  value={passwordData.newPassword}
-                  onChange={handlePasswordChange}
-                  className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="password"
-                  placeholder="Skriv ny passord"
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Confirm New Password
+                  </label>
+                  <input
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                    type="password"
+                    placeholder="Confirm new password"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Bekreft ny passord
-                </label>
-                <input
-                  name="confirmPassword"
-                  value={passwordData.confirmPassword}
-                  onChange={handlePasswordChange}
-                  className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="password"
-                  placeholder="Gjenta passord"
-                />
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="bg-[#1E7B8C] text-white px-6 py-2 rounded-md hover:bg-[#1a6b7a] transition-colors"
+                  >
+                    Change Password
+                  </button>
+                </div>
               </div>
-              <div></div>
-              <div></div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="mt-4 bg-[#1E7B8C] text-white px-4 py-2 rounded-full text-sm"
-                >
-                  Endre
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </>
       ) : (
-        <>
-          <form onSubmit={handleProfileSubmit}>
-            <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mb-6 border rounded-lg p-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Navn
-                </label>
-                <input
-                  name="name"
-                  value={profile.name}
-                  onChange={handleProfileChange}
-                  className="text-[#1C1C1C80] rounded-full px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="text"
-                  placeholder="Valon Selimi"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  E-post
-                </label>
-                <input
-                  name="email"
-                  value={profile.email}
-                  onChange={handleProfileChange}
-                  className="text-[#1C1C1C80] rounded-full px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="email"
-                  placeholder="valon@aneainvest.no"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Telefon nr
-                </label>
-                <input
-                  name="mobile"
-                  value={profile.mobile}
-                  onChange={handleProfileChange}
-                  className="text-[#1C1C1C80] rounded-full px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="text"
-                  placeholder="293851"
-                />
-              </div>
-              <div></div>
-              <div></div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="mt-4 bg-[#1E7B8C] text-white px-4 py-2 rounded-full text-sm"
-                >
-                  Lagre
-                </button>
-              </div>
-            </div>
-          </form>
-
-          <h1 className="text-lg font-bold mb-2">Endre passord</h1>
-
-          <form onSubmit={handlePasswordSubmit}>
-            <div className="grid md:grid-cols-3 grid-cols-2 gap-4 border rounded-lg p-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Gammel passord
-                </label>
-                <input
-                  name="oldPassword"
-                  value={passwordData.oldPassword}
-                  onChange={handlePasswordChange}
-                  className="text-[#1C1C1C80] rounded-full px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="password"
-                  placeholder="Skriv din gamle passord"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nytt passord
-                </label>
-                <input
-                  name="newPassword"
-                  value={passwordData.newPassword}
-                  onChange={handlePasswordChange}
-                  className="text-[#1C1C1C80] rounded-full px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="password"
-                  placeholder="Skriv ny passord"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Bekreft ny passord
-                </label>
-                <input
-                  name="confirmPassword"
-                  value={passwordData.confirmPassword}
-                  onChange={handlePasswordChange}
-                  className="text-[#1C1C1C80] rounded-full px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
-                  type="password"
-                  placeholder="Gjenta passord"
-                />
-              </div>
-              <div></div>
-              <div></div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="mt-4 bg-[#1E7B8C] text-white px-4 py-2 rounded-full text-sm"
-                >
-                  Endre
-                </button>
-              </div>
-            </div>
-          </form>
-        </>
+        <div className="text-center py-8">
+          <p className="text-gray-600">You don't have permission to access this page.</p>
+        </div>
       )}
     </AdminLayout>
   );

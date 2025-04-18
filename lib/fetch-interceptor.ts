@@ -46,7 +46,7 @@ export async function fetchWithInterceptor<T>(
         }
 
         // Prepare URL
-        const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`
+        const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`
 
         // Make the request
         const response = await fetch(url, {
