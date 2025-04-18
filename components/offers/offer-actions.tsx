@@ -39,7 +39,7 @@ export default function OfferActions({ offer, onDelete }: OfferActionsProps) {
         date: new Date().toLocaleDateString("nb-NO"),
         validUntil: getValidUntilDate(offer.validDays),
         createdBy: offer.createdBy.username,
-        terms: offer.terms || "Please pay within 15 days from the date of invoice.",
+        terms: offer.terms || "",
         discount: offer.discount,
         VatValue: totals.VATValue,
         total: totals.total,

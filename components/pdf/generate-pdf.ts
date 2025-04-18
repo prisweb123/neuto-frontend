@@ -29,13 +29,33 @@ export const generatePricePdf = async (data: PdfData) => {
                 unit: "mm",
                 format: "a4",
             },
+            pagebreak: {
+                mode: ['css'],
+                before: ['.page-break'],
+                after: ['.page-break'],
+                avoid: ['img', '.header-logo', '.page-number']
+            }
         };
 
-        await html2pdf()
+        const pdf = await html2pdf()
             .set(options)
             .from(element)
-            .save();
+            .toPdf()
+            .get('pdf')
+            .then((pdf: any) => {
+                const totalPages = pdf.internal.getNumberOfPages();
+                // Only add page numbers if there's actual content
+                if (totalPages > 0) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        pdf.setPage(i);
+                        pdf.setFontSize(8);
+                        pdf.text(`Side ${i} av ${totalPages}`, pdf.internal.pageSize.getWidth() - 30, 10);
+                    }
+                }
+                return pdf;
+            });
 
+        await pdf.save();
         document.body.removeChild(element);
     } catch (error) {
         console.error('Error generating PDF:', error);

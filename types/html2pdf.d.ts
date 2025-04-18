@@ -17,15 +17,20 @@ declare module 'html2pdf.js' {
             unit?: string;
             format?: string;
         };
+        pagebreak?: {
+            mode?: string[];
+            before?: string[];
+            after?: string[];
+            avoid?: string[];
+        };
     }
 
     export interface Html2PdfInstance {
         set(options: Html2PdfOptions): Html2PdfInstance;
         from(element: string | HTMLElement): Html2PdfInstance;
         save(): Promise<void>;
-        toPdf(): {
-            save: () => Promise<void>;
-        };
+        toPdf(): Html2PdfInstance;
+        get(type: string): any;
     }
 
     export interface Html2PdfStatic {
