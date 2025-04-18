@@ -14,9 +14,14 @@ export const generatePricePdf = async (data: PdfData) => {
         element.innerHTML = htmlTemplate(data);
         document.body.appendChild(element);
     
+        // Extract customer name from info (first line)
+        const customerName = data.info.split('\n')[0].trim();
+        const safeFileName = customerName.replace(/[^a-zA-Z0-9æøåÆØÅ\s-]/g, '_');
+        const fileName = `Tilbud-${data.offerNumber}-${safeFileName}.pdf`;
+    
         const options = {
             margin: 0.5,
-            filename: `Tilbud-${data.offerNumber}.pdf`,
+            filename: fileName,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { 
                 scale: 2,
@@ -55,7 +60,7 @@ export const generatePricePdf = async (data: PdfData) => {
                 return pdf;
             });
 
-        await pdf.save();
+        await pdf.save(fileName);
         document.body.removeChild(element);
     } catch (error) {
         console.error('Error generating PDF:', error);
