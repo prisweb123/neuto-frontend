@@ -1,0 +1,35 @@
+.preview-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+}
+
+@media print {
+  .preview-header {
+    display: none;
+  }
+  
+  .preview-content {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+/* Add custom scrollbar */
+.preview-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.preview-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.preview-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.preview-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+} 

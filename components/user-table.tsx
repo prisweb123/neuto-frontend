@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { UserActionButtons } from "./user-action-buttons"
+import { UserActionButtons } from "@/components/user-action-buttons"
 
 interface User {
   id: number;

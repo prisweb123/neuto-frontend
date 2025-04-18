@@ -137,7 +137,7 @@ export default function PricingInterface({ offerId }: { offerId: string | null }
               <span className="font-small">{totals.VATValue.toLocaleString()},00,-</span>
             </div>
             <div className="flex justify-between py-1">
-              <span className="text-sm">Prisavslag ({discount}%):</span>
+              <span className="text-sm">Rabatt AND PROSENT ({discount}%):</span>
               <span className="font-small">{totals.additionalDiscount.toLocaleString()},00,-</span>
             </div>
             <div className="flex justify-between py-1">

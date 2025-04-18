@@ -259,7 +259,6 @@ export default function ProductsPage() {
                 : "",
               endDate: editingPackage.endDate || "",
               include: editingPackage.include,
-              info: editingPackage.info || "Beskjed vil kune være synlig for selgere",
             }
             : {
               name: "",
@@ -270,7 +269,6 @@ export default function ProductsPage() {
               discount: "",
               endDate: "",
               include: "",
-              info: "Beskjed vil kune være synlig for selgere",
             }
         }
       />

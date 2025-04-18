@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/auth-context"
 import { useState } from "react"
 import { ConfirmDialog } from "../ui/confirm-dialog"
+import { toast } from "sonner"
 
 interface OfferActionsProps {
   offer: Offer
@@ -29,29 +30,34 @@ export default function OfferActions({ offer, onDelete }: OfferActionsProps) {
     router.push(`/price-offer?id=${offer._id}`)
   }
 
-  const handlePrint = () => {
-    const selectedPkg = offer.selectedPackage
+  const handlePrint = async () => {
+    try {
+      const selectedPkg = offer.selectedPackage
 
-    const pdfData = {
-      offerNumber: offer.offerNo,
-      date: new Date().toLocaleDateString("nb-NO"),
-      validUntil: getValidUntilDate(offer.validDays),
-      createdBy: offer.createdBy.username,
-      terms: offer.terms || "Please pay within 15 days from the date of invoice.",
-      VatValue: totals.VATValue,
-      total: totals.total,
-      campaignDiscount: totals.campaignDiscount,
-      additionalDiscount: totals.additionalDiscount,
-      totalWithoutVAT: totals.totalWithoutVAT,
-      package: selectedPkg,
-      optionPackages: offer.addedOptionPackages,
-      manualProducts: offer.manualProducts,
-      info: offer.info
+      const pdfData = {
+        offerNumber: offer.offerNo,
+        date: new Date().toLocaleDateString("nb-NO"),
+        validUntil: getValidUntilDate(offer.validDays),
+        createdBy: offer.createdBy.username,
+        terms: offer.terms || "Please pay within 15 days from the date of invoice.",
+        VatValue: totals.VATValue,
+        total: totals.total,
+        campaignDiscount: totals.campaignDiscount,
+        additionalDiscount: totals.additionalDiscount,
+        totalWithoutVAT: totals.totalWithoutVAT,
+        package: selectedPkg,
+        optionPackages: offer.addedOptionPackages,
+        manualProducts: offer.manualProducts,
+        info: offer.info
+      }
+
+      await generatePricePdf(pdfData)
+      toast.success("PDF generated successfully")
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+      toast.error("Failed to generate PDF")
     }
-
-    generatePricePdf(pdfData)
   }
-
 
   return (
     <>
@@ -76,7 +82,11 @@ export default function OfferActions({ offer, onDelete }: OfferActionsProps) {
         }} aria-label="Delete offer">
           <Trash2 className="h-5 w-5" />
         </button>}
-        <button className="text-gray-400 hover:text-gray-600" onClick={handlePrint} aria-label="Print offer">
+        <button 
+          className="text-gray-400 hover:text-gray-600" 
+          onClick={handlePrint} 
+          aria-label="Download PDF"
+        >
           <Printer className="h-5 w-5" />
         </button>
         <button className="text-gray-400 hover:text-gray-600" onClick={handleCopy} aria-label="Copy offer">

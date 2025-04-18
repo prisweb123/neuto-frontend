@@ -43,7 +43,7 @@ export default function AddEditPackageModal({
     discount: "",
     endDate: "",
     include: "",
-    info: "Beskjed vil kune være synlig for selgere",
+    info: "",
   },
 }: AddEditPackageModalProps) {
   const [name, setName] = useState(initialData.name)
