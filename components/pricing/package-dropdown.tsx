@@ -31,10 +31,7 @@ export default function PackageDropdown({ options, value, onChange, label }: Pac
   console.log('Selected option:', selectedOption)
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' })
-      .format(price)
-      .replace('NOK', 'Kr')
-      .trim()
+    return `Kr ${price.toLocaleString('no-NO')},-`
   }
 
   const formatDate = (dateString: string) => {
@@ -102,11 +99,11 @@ export default function PackageDropdown({ options, value, onChange, label }: Pac
                 <div className="text-right">
                   {selectedOption.discount && (
                     <div className="text-sm line-through text-gray-500">
-                      {formatPrice(selectedOption.price)}
+                      Kr {selectedOption.price.toLocaleString('no-NO')},-
                     </div>
                   )}
                   <div className="font-medium">
-                    {formatPrice(selectedOption.price - (selectedOption.discount || 0))}
+                    Kr {(selectedOption.price - (selectedOption.discount || 0)).toLocaleString('no-NO')},-
                   </div>
                 </div>
               )}
@@ -125,12 +122,12 @@ export default function PackageDropdown({ options, value, onChange, label }: Pac
               {options.map((option) => (
                 <button
                   key={option.id}
-                  className="flex flex-row justify-between w-full px-6 py-4 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 items-center"
+                  className="flex flex-col md:flex-row justify-between w-full px-4 md:px-6 py-4 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 items-start md:items-center space-y-4 md:space-y-0"
                   onClick={() => handleOptionClick(option.id)}
                 >
                   {/* Left section - Image and Title */}
-                  <div className="flex flex-row justify-between  mr-6">
-                    <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 bg-gray-50">
+                  <div className="flex flex-row justify-start md:mr-6 w-full md:w-auto">
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 bg-gray-50">
                       <Image
                         src={option.image || "/placeholder.svg"}
                         alt={option.title}
@@ -140,74 +137,76 @@ export default function PackageDropdown({ options, value, onChange, label }: Pac
                       />
                     </div>
                     <div>
-                      <div className="text-xl font-medium">{option.title}</div>
+                      <div className="text-lg md:text-xl font-medium">{option.title}</div>
                       {option.description && (
-                        <div className="text-sm text-gray-600">{option.description}</div>
+                        <div className="text-xs md:text-sm text-gray-600">{option.description}</div>
                       )}
                     </div>
                   </div>
 
                   {/* Middle section - Bullet Points */}
-                  <div className="flex justify-between grid grid-cols-2 gap-x-8">
-                    <ul className="space-y-1">
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        Instegslister
-                      </li>
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        Hjulbuer
-                      </li>
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        Bakfanger
-                      </li>
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        panser
-                      </li>
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        Skjermer
-                      </li>
-                    </ul>
-                    <ul className="space-y-1">
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        Instegslister
-                      </li>
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        Hjulbuer
-                      </li>
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        Bakfanger
-                      </li>
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        panser
-                      </li>
-                      <li className="flex items-center text-gray-600 text-sm">
-                        <span className="mr-2">•</span>
-                        Skjermer
-                      </li>
+                  <div className="flex justify-start md:justify-between w-full md:w-auto">
+                    <ul className="space-y-1 w-full md:w-auto grid grid-cols-1 md:grid-cols-2 gap-x-8">
+                      <div>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          Instegslister
+                        </li>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          Hjulbuer
+                        </li>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          Bakfanger
+                        </li>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          panser
+                        </li>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          Skjermer
+                        </li>
+                      </div>
+                      <div className="hidden md:block">
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          Instegslister
+                        </li>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          Hjulbuer
+                        </li>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          Bakfanger
+                        </li>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          panser
+                        </li>
+                        <li className="flex items-center text-gray-600 text-xs md:text-sm">
+                          <span className="mr-2">•</span>
+                          Skjermer
+                        </li>
+                      </div>
                     </ul>
                   </div>
 
                   {/* Right section - Price and Campaign */}
-                  <div className="flex-shrink-0 ml-6 text-right">
+                  <div className="flex-shrink-0 md:ml-6 text-right w-full md:w-auto">
                     {option.discount && option.endDate && (
-                      <div className="inline-block px-3 py-1 bg-red-500 text-white text-sm rounded mb-1">
+                      <div className="inline-block px-2 md:px-3 py-1 bg-red-500 text-white text-xs md:text-sm rounded mb-1">
                         KAMPANJE - {formatDate(option.endDate)}
                       </div>
                     )}
                     {option.discount && (
-                      <div className="text-gray-500 line-through">
+                      <div className="text-gray-500 line-through text-sm md:text-base">
                         Kr {option.price.toLocaleString('no-NO')},-
                       </div>
                     )}
-                    <div className="text-xl font-medium">
+                    <div className="text-lg md:text-xl font-medium">
                       Kr {(option.price - (option.discount || 0)).toLocaleString('no-NO')},-
                     </div>
                   </div>

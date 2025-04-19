@@ -2,6 +2,20 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { ManualProduct } from "./type";
 
+const formatPrice = (price: number): string => {
+  // Convert to 2 decimal places
+  const roundedPrice = Math.round(price * 100) / 100;
+  // Convert to string with comma as decimal separator
+  const [whole, decimal] = roundedPrice.toString().split('.');
+  
+  // If there are decimals, format with comma
+  if (decimal) {
+    return `${whole},${decimal.padEnd(2, '0')},-`;
+  }
+  // If it's a whole number, add ,00
+  return `${whole},00,-`;
+};
+
 export default function AddProductManually({
   products,
   setProducts,
@@ -23,9 +37,11 @@ export default function AddProductManually({
     discount: number,
     vat: number
   ) => {
-    const discountedPrice = price - discount;
-    const vatAmount = discountedPrice * (vat / 100);
-    return discountedPrice + vatAmount;
+    // First calculate price with VAT
+    const priceWithVAT = price * (1 + vat / 100);
+    // Then subtract the discount
+    const finalPrice = priceWithVAT - discount;
+    return finalPrice;
   };
 
   const handleInputChange = (
@@ -147,16 +163,16 @@ export default function AddProductManually({
                       {product.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {product.price.toLocaleString()}.00,-
+                      {formatPrice(product.price)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {product.discount.toLocaleString()}.00,-
+                      {formatPrice(product.discount)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {product.vat}%
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {product.totalPrice.toLocaleString()}.00,-
+                      {formatPrice(product.totalPrice)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <button
@@ -180,7 +196,7 @@ export default function AddProductManually({
                     Total Amount:
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {totalAmount.toLocaleString()},00,-
+                    {formatPrice(totalAmount)}
                   </td>
                 </tr>
               </tbody>
@@ -280,7 +296,7 @@ export default function AddProductManually({
             </label>
             <input
               type="text"
-              value={`${formData.totalPrice.toLocaleString()},00,-`}
+              value={formatPrice(formData.totalPrice)}
               readOnly
               className="block w-full rounded-md border border-gray-300 py-2 px-3 bg-blue-100/50 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
             />

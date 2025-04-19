@@ -74,17 +74,25 @@ export const htmlTemplate = (data: PdfData) => {
         </div>
         <div style="width: 20%; text-align: right;">
           <div style="display: flex; flex-direction: column; align-items: flex-end;">
-            <div style="position: relative; margin-bottom: 2px;">
-              <span style="position: relative; display: inline-block; color: #808080; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px;">
-                ${formatPrice(data.package.price)},-
-                <span style="position: absolute; left: 0; right: 0; top: 75%; height: 1.5px; background-color: #808080; transform: translateY(-50%);"></span>
-              </span>
-            </div>
-            <div>
-              <span style="color: #FF0000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px;">
-                ${formatPrice(data.package.discount ? data.package.price - data.package.discount : data.package.price)},-
-              </span>
-            </div>
+            ${data.package.discount ? `
+              <div style="position: relative; margin-bottom: 2px;">
+                <span style="position: relative; display: inline-block; color: #808080; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px;">
+                  ${formatPrice(data.package.price)},-
+                  <span style="position: absolute; left: 0; right: 0; top: 75%; height: 1.5px; background-color: #808080; transform: translateY(-50%);"></span>
+                </span>
+              </div>
+              <div>
+                <span style="color: #FF0000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px;">
+                  ${formatPrice(data.package.price - data.package.discount)},-
+                </span>
+              </div>
+            ` : `
+              <div>
+                <span style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px;">
+                  ${formatPrice(data.package.price)},-
+                </span>
+              </div>
+            `}
           </div>
         </div>
       </div>
@@ -162,20 +170,20 @@ export const htmlTemplate = (data: PdfData) => {
             .map((val) => `<div style="display: flex;">
               <span style="min-width: 15px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">•</span>
               <span style="padding-left: 5px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">${val.name} 
-                <span style="position: relative; display: inline-block; color: #808080; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px; margin-right: 4px;">
-                  ${formatPrice(Number(val.price))},-
-                  <span style="position: absolute; left: 0; right: 0; top: 75%; height: 1.5px; background-color: #808080; transform: translateY(-50%);"></span>
-                </span>
-                ${val.discountPrice
-                  ? `<span style="color: #FF0000; font-weight: 600;">${formatPrice(
-                      Number(val.price) - Number(val.discountPrice)
-                    )},-${
-                      val.discountEndDate
-                        ? `<span style="font-style: italic;">(Kampanje ${formatDate(val.discountEndDate)})</span>`
-                        : ''
-                    }</span>`
-                  : ""
-                }
+                ${val.discountPrice ? `
+                  <span style="position: relative; display: inline-block; color: #808080; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px; margin-right: 4px;">
+                    ${formatPrice(Number(val.price))},-
+                    <span style="position: absolute; left: 0; right: 0; top: 75%; height: 1.5px; background-color: #808080; transform: translateY(-50%);"></span>
+                  </span>
+                  <span style="color: #FF0000; font-weight: 600;">
+                    ${formatPrice(Number(val.price) - Number(val.discountPrice))},-
+                    ${val.discountEndDate ? `<span style="font-style: italic;">(Kampanje ${formatDate(val.discountEndDate)})</span>` : ''}
+                  </span>
+                ` : `
+                  <span style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px;">
+                    ${formatPrice(Number(val.price))},-
+                  </span>
+                `}
               </span>
             </div>`)
             .join("");

@@ -26,7 +26,7 @@ interface PasswordData {
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SettingPage() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const [profile, setProfile] = useState<UserProfile>({
@@ -392,7 +392,7 @@ export default function SettingPage() {
                   />
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex items-end">
                   <button
                     type="submit"
                     className="bg-[#1E7B8C] text-white px-6 py-2 rounded-md hover:bg-[#1a6b7a] transition-colors"
@@ -405,9 +405,120 @@ export default function SettingPage() {
           </div>
         </>
       ) : (
-        <div className="text-center py-8">
-          <p className="text-gray-600">You don't have permission to access this page.</p>
-        </div>
+        <>
+          <form onSubmit={handleProfileSubmit}>
+            <div className="grid grid-cols-2 gap-4 mb-6 border rounded-lg p-6">
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Name
+                </label>
+                <input
+                  name="name"
+                  value={profile.name}
+                  onChange={handleProfileChange}
+                  className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                  type="text"
+                  placeholder="Enter name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  name="email"
+                  value={profile.email}
+                  onChange={handleProfileChange}
+                  className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                  type="email"
+                  placeholder="Enter email"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone Number
+                </label>
+                <input
+                  name="mobile"
+                  value={profile.mobile}
+                  onChange={handleProfileChange}
+                  className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                  type="text"
+                  placeholder="Enter phone number"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="bg-[#1E7B8C] text-white px-6 py-2 rounded-md hover:bg-[#1a6b7a] transition-colors"
+              >
+                Save Profile
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold mb-4">Change Password</h2>
+            <form onSubmit={handlePasswordSubmit}>
+              <div className="grid grid-cols-2 gap-4 border rounded-lg p-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Current Password
+                  </label>
+                  <input
+                    name="oldPassword"
+                    value={passwordData.oldPassword}
+                    onChange={handlePasswordChange}
+                    className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                    type="password"
+                    placeholder="Enter current password"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    New Password
+                  </label>
+                  <input
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                    type="password"
+                    placeholder="Enter new password"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Confirm New Password
+                  </label>
+                  <input
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    className="text-[#1C1C1C80] rounded-md px-2 hover:text-black border focus:bg-[#C7DEE2] bg-white focus:ring-0 focus:border-0 focus:outline-none py-1 w-full"
+                    type="password"
+                    placeholder="Confirm new password"
+                  />
+                </div>
+
+                <div className="flex items-end">
+                  <button
+                    type="submit"
+                    className="bg-[#1E7B8C] text-white px-6 py-2 rounded-md hover:bg-[#1a6b7a] transition-colors"
+                  >
+                    Change Password
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </>
       )}
     </AdminLayout>
   );
