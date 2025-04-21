@@ -249,7 +249,7 @@ export const htmlTemplate = (data: PdfData) => {
       <div style="width: 40%; background-color: #FBFCFE; padding: 20px; border-radius: 16px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
           <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Rabatt ${data.discount}%</div>
-          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 500; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.additionalDiscount)},-</div>
+          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 500; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.manualProducts[0].totalPrice || 0)},-</div>
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
           <div style="font-family: 'Inter'; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Kampanje rabatt</div>
