@@ -19,7 +19,10 @@ export interface PdfData {
   info: string;
 }
 
-const formatPrice = (price: number): string => {
+const formatPrice = (price: number | undefined | null): string => {
+  if (price === undefined || price === null) {
+    return '0';
+  }
   return price.toLocaleString();
 };
 
@@ -67,7 +70,7 @@ export const htmlTemplate = (data: PdfData) => {
           </div>
         </div>
         <div style="width: 15%; text-align: right; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">
-          ${formatPrice(data.package.discount || 0)},-
+          ${formatPrice(data.package.discount)},-
         </div>
         <div style="width: 15%; text-align: right; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">
           25 %
@@ -83,7 +86,7 @@ export const htmlTemplate = (data: PdfData) => {
               </div>
               <div>
                 <span style="color: #FF0000; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px;">
-                  ${formatPrice(data.package.price - data.package.discount)},-
+                  ${formatPrice((data.package.price || 0) - (data.package.discount || 0))},-
                 </span>
               </div>
             ` : `
@@ -249,7 +252,7 @@ export const htmlTemplate = (data: PdfData) => {
       <div style="width: 40%; background-color: #FBFCFE; padding: 20px; border-radius: 16px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
           <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Rabatt ${data.discount}%</div>
-          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 500; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.manualProducts[0].totalPrice || 0)},-</div>
+          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 500; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.additionalDiscount)},-</div>
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
           <div style="font-family: 'Inter'; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Kampanje rabatt</div>
@@ -264,8 +267,7 @@ export const htmlTemplate = (data: PdfData) => {
           <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; line-height: 24px; letter-spacing: 0px; color: #363C45;">Å Betale</div>
           <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.total)},-</div>
         </div>
-                <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; margin: 16px 0;"></div>
-
+        <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; margin: 16px 0;"></div>
       </div>
     </div>
   </div>`;

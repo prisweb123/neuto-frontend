@@ -300,94 +300,96 @@ export default function PricingForm({
       )}
 
       {/* Option Packages */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-teal-600 mb-1">Tilvalg</label>
+      {marke && model && (
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-teal-600 mb-1">Tilvalg</label>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center h-32">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
-          </div>
-        ) : error ? (
-          <div className="text-red-500 text-center py-4">{error}</div>
-        ) : (
-          <div className="border rounded-md p-6 mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {optionPackages.map((optionPackage) => (
-                <div key={optionPackage._id}>
-                  <div className="flex justify-between">
-                    <h3 className="font-medium mb-4">{optionPackage.name}</h3>
-                    <div className="group relative inline-block">
-                      <HelpCircle className="h-4 w-4 text-gray-400 ml-2 cursor-help" />
-                      <div className="invisible group-hover:visible absolute z-50 w-48 p-2  bg-gray-200 bg-opacity-50 text-black text-sm rounded-md shadow-lg -right-2 top-6">
-                        {optionPackage.info}
+          {isLoading ? (
+            <div className="flex items-center justify-center h-32">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
+            </div>
+          ) : error ? (
+            <div className="text-red-500 text-center py-4">{error}</div>
+          ) : (
+            <div className="border rounded-md p-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {optionPackages.map((optionPackage) => (
+                  <div key={optionPackage._id}>
+                    <div className="flex justify-between">
+                      <h3 className="font-medium mb-4">{optionPackage.name}</h3>
+                      <div className="group relative inline-block">
+                        <HelpCircle className="h-4 w-4 text-gray-400 ml-2 cursor-help" />
+                        <div className="invisible group-hover:visible absolute z-50 w-48 p-2  bg-gray-200 bg-opacity-50 text-black text-sm rounded-md shadow-lg -right-2 top-6">
+                          {optionPackage.info}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="space-y-3">
-                    {optionPackage.options.filter(option => option.isActive).map((option) => (
-                      <div key={option.id} className="flex items-start">
-                        <div className="flex h-5 items-center">
-                          <input
-                            id={option.id}
-                            type="checkbox"
-                            checked={option.isSelected}
-                            onChange={() => {
-                              const updatedOptions = optionPackage.options.map((opt) =>
-                                opt.id === option.id ? { ...opt, isSelected: !opt.isSelected } : opt
-                              )
-                              const updatedPackages = optionPackages.map((pkg) =>
-                                pkg._id === optionPackage._id
-                                  ? { ...pkg, options: updatedOptions }
-                                  : pkg
-                              )
-                              setOptionPackages(updatedPackages)
-                            }}
-                            className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-                          />
+                    <div className="space-y-3">
+                      {optionPackage.options.filter(option => option.isActive).map((option) => (
+                        <div key={option.id} className="flex items-start">
+                          <div className="flex h-5 items-center">
+                            <input
+                              id={option.id}
+                              type="checkbox"
+                              checked={option.isSelected}
+                              onChange={() => {
+                                const updatedOptions = optionPackage.options.map((opt) =>
+                                  opt.id === option.id ? { ...opt, isSelected: !opt.isSelected } : opt
+                                )
+                                const updatedPackages = optionPackages.map((pkg) =>
+                                  pkg._id === optionPackage._id
+                                    ? { ...pkg, options: updatedOptions }
+                                    : pkg
+                                )
+                                setOptionPackages(updatedPackages)
+                              }}
+                              className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                            />
+                          </div>
+                          <label htmlFor={option.id} className="ml-3 text-sm text-gray-700">
+                            {option.name} {option.price},-
+                            {option.discountPrice && (
+                              <span className="text-teal-600 ml-2">
+                                / {Number(option.price) - Number(option.discountPrice)},-
+                                {option.discountEndDate && (
+                                  <>Kampanje
+                                    <span className="text-gray-500 text-xs ml-1">
+                                      ({(option.discountEndDate)})
+                                    </span>
+                                  </>
+                                )}
+                              </span>
+                            )}
+                          </label>
                         </div>
-                        <label htmlFor={option.id} className="ml-3 text-sm text-gray-700">
-                          {option.name} {option.price},-
-                          {option.discountPrice && (
-                            <span className="text-teal-600 ml-2">
-                              / {Number(option.price) - Number(option.discountPrice)},-
-                              {option.discountEndDate && (
-                                <>Kampanje
-                                  <span className="text-gray-500 text-xs ml-1">
-                                    ({(option.discountEndDate)})
-                                  </span>
-                                </>
-                              )}
-                            </span>
-                          )}
-                        </label>
-                      </div>
-                    ))}
-                    <button
-                      className="mt-4 bg-teal-600 text-white px-4 py-1 rounded-md text-sm"
-                      disabled={!optionPackage.options.find((opt) =>
-                        opt.isSelected === true
-                      )}
-                      onClick={() => {
-                        const selectedOptionPackage = optionPackages.find((pkg) => pkg._id === optionPackage._id)
-                        if (selectedOptionPackage) {
-                          const alreadyAddedPackage = addedOptionPackages.find(pkg => pkg._id === selectedOptionPackage._id)
-                          if (alreadyAddedPackage) {
-                            setAddedOptionPackages(prevVal => prevVal.map(val => {
-                              if (val._id === selectedOptionPackage._id) return selectedOptionPackage
-                              return val;
-                            }))
-                          } else {
-                            setAddedOptionPackages(prevVal => [...prevVal, selectedOptionPackage])
+                      ))}
+                      <button
+                        className="mt-4 bg-teal-600 text-white px-4 py-1 rounded-md text-sm"
+                        disabled={!optionPackage.options.find((opt) =>
+                          opt.isSelected === true
+                        )}
+                        onClick={() => {
+                          const selectedOptionPackage = optionPackages.find((pkg) => pkg._id === optionPackage._id)
+                          if (selectedOptionPackage) {
+                            const alreadyAddedPackage = addedOptionPackages.find(pkg => pkg._id === selectedOptionPackage._id)
+                            if (alreadyAddedPackage) {
+                              setAddedOptionPackages(prevVal => prevVal.map(val => {
+                                if (val._id === selectedOptionPackage._id) return selectedOptionPackage
+                                return val;
+                              }))
+                            } else {
+                              setAddedOptionPackages(prevVal => [...prevVal, selectedOptionPackage])
+                            }
                           }
-                        }
-                      }}>Legg til</button>
+                        }}>Legg til</button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </>
   )
 }
