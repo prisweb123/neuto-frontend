@@ -37,7 +37,7 @@ export interface OptionItem {
     discount?: number
     /** Date in DD/MM/YY format */
     endDate?: DateString
-    include: string
+    include: string[]
     info: string
   }
 

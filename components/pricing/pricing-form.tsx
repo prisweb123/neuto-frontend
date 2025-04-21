@@ -6,7 +6,6 @@ import PackageDropdown from "./package-dropdown"
 import { fetchWithInterceptor } from "@/lib/fetch-interceptor"
 import { OptionProduct, Product } from "./type"
 
-
 const transformToPackageOption = (product: Product) => ({
   id: product._id,
   title: product.name,
@@ -14,9 +13,9 @@ const transformToPackageOption = (product: Product) => ({
   image: product.image || "/images/package-1.png",
   price: product.price,
   discount: product.discount,
-  endDate: product.endDate
+  endDate: product.endDate,
+  include: product.include || [] // Provide default empty array if include is undefined
 })
-
 
 export default function PricingForm({
   selectedPackage,
@@ -104,15 +103,16 @@ export default function PricingForm({
         ])
 
         if (mainResponse.success) {
+          console.log('Fetched packages:', mainResponse.data)
           setAllPackages(mainResponse.data)
-          console.log(allPackages)
-
         }
 
         if (optionResponse.success) {
+          console.log('Fetched option packages:', optionResponse.data)
           setAllOptionPackages(optionResponse.data)
         }
       } catch (err) {
+        console.error('Error fetching packages:', err)
         setError(err instanceof Error ? err.message : 'An error occurred while fetching packages')
       } finally {
         setIsLoading(false)
@@ -124,26 +124,42 @@ export default function PricingForm({
 
   // Filter packages when marke or model changes
   useEffect(() => {
+    console.log('Filtering packages with:', { marke, model, allPackages, allOptionPackages })
+    
     // Filter main packages
-    const filteredPackages = marke && model
+    const filteredPackages = marke 
       ? allPackages.filter(pkg =>
-        pkg.markeModels.some(mm =>
-          mm.marke === marke && mm.model === model
-        )
+        pkg.markeModels.some(mm => {
+          if (model) {
+            // If model is selected, match both marke and model
+            return mm.marke.toLowerCase() === marke.toLowerCase() && 
+                   mm.model.toLowerCase() === model.toLowerCase()
+          } else {
+            // If only marke is selected, match just the marke
+            return mm.marke.toLowerCase() === marke.toLowerCase()
+          }
+        })
       )
-      : [];
+      : allPackages; // Show all packages if no marke selected
 
+    console.log('Filtered packages:', filteredPackages)
     setPackages(filteredPackages)
 
-    // Filter option packages
-    const filteredOptionPackages = marke && model
+    // Filter option packages with the same logic
+    const filteredOptionPackages = marke
       ? allOptionPackages.filter(pkg =>
-        pkg.markeModels.some(mm =>
-          mm.marke === marke && mm.model === model
-        )
+        pkg.markeModels.some(mm => {
+          if (model) {
+            return mm.marke.toLowerCase() === marke.toLowerCase() && 
+                   mm.model.toLowerCase() === model.toLowerCase()
+          } else {
+            return mm.marke.toLowerCase() === marke.toLowerCase()
+          }
+        })
       )
-      : []
+      : allOptionPackages;
 
+    console.log('Filtered option packages:', filteredOptionPackages)
     setOptionPackages(filteredOptionPackages)
   }, [marke, model, allPackages, allOptionPackages])
 
