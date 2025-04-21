@@ -24,7 +24,11 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
+    // Only add the listener when the menu is open
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
@@ -34,22 +38,21 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = "auto"
     }
+
     return () => {
       document.body.style.overflow = "auto"
     }
   }, [isOpen])
 
+  if (!isOpen) return null
+
   return (
-    <div
-      className={`fixed inset-0 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-    >
+    <div className="fixed inset-0 z-50">
       <div className="absolute inset-0 bg-black bg-opacity-30" onClick={onClose}></div>
       <div
         ref={menuRef}
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-50 shadow-lg flex flex-col transition-transform duration-300 ease-in-out rounded-r-3xl transform ${isOpen ? "translate-x-0" : "-translate-x-full"} font-['Onest']`}
+        className="fixed top-0 left-0 h-full w-64 bg-gray-50 shadow-lg flex flex-col transition-transform duration-300 ease-in-out rounded-r-3xl transform translate-x-0 font-['Onest']"
       >
         <div className="p-5 font-bold text-gray-800 text-center font-['Onest']">MENU</div>
 
@@ -70,18 +73,26 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
                 Nytt Tilbud
               </Link>
             </li>
-            {/* Add more menu items as needed */}
           </ul>
         </nav>
 
         <div className="p-6 flex flex-col items-center space-y-4">
           <button 
-            onClick={() => router.push('/settings')} 
+            onClick={() => {
+              router.push('/settings')
+              onClose()
+            }} 
             className="p-3 rounded-full border border-teal-200 text-teal-600 hover:bg-teal-50 font-['Onest']"
           >
             <Settings className="h-5 w-5" />
           </button>
-          <button onClick={logout} className="p-3 rounded-full border border-teal-200 text-teal-600 hover:bg-teal-50 font-['Onest']">
+          <button 
+            onClick={() => {
+              logout()
+              onClose()
+            }} 
+            className="p-3 rounded-full border border-teal-200 text-teal-600 hover:bg-teal-50 font-['Onest']"
+          >
             <LogOut className="h-5 w-5" />
           </button>
         </div>
