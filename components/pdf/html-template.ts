@@ -45,15 +45,15 @@ export const htmlTemplate = (data: PdfData) => {
       .map((line: string) => line.replace(/^[•\s]+/, "").trim())
       .filter((line: string) => line.length > 0)
       .map((val: string) => `<div style="display: flex; margin: 4px 0;">
-        <span style="min-width: 15px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">•</span>
-        <span style="padding-left: 5px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">${val}</span>
+        <span style="min-width: 15px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">•</span>
+        <span style="padding-left: 5px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">${val}</span>
       </div>`)
       .join("");
 
     return `<div style="border-bottom: 1px solid #eee; padding: 15px 10px;">
       <div style="display: flex; justify-content: space-between; padding: 3px">
         <div style="width: 50%; text-align: left;">
-          <p style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">
+          <p style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">
             ${safeString(data.package.name)} ${
               data.package.endDate
                 ? `<span style="color: #FF0000; font-style: italic; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px;">(KAMPANJE ${formatDate(
@@ -62,7 +62,7 @@ export const htmlTemplate = (data: PdfData) => {
                 : ""
             }
           </p>
-          <p style="margin: 4px 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-style: italic; font-size: 14px; line-height: 150%; letter-spacing: 0; color: #1C1C1C;">
+          <p style="margin: 4px 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-style: italic; font-size: 12px; line-height: 150%; letter-spacing: 0; color: #1C1C1C;">
             ${safeString(data.package.description)}
           </p>
           <div style="margin: 8px 0 0 0; padding: 0;">
@@ -153,7 +153,7 @@ export const htmlTemplate = (data: PdfData) => {
     </header>
     
     <div style="margin-top: -70px;">
-      <h1 style="font-family: 'Poppins', sans-serif; font-size: 30px; font-weight: 400; line-height: normal; letter-spacing: 0px; margin-bottom: 30px;">Tilbud</h1>
+      <h1 style="font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 400; line-height: normal; letter-spacing: 0px; margin-bottom: 30px;">Tilbud</h1>
     </div>
     
     <div style="margin-top: 20px;">
@@ -171,10 +171,10 @@ export const htmlTemplate = (data: PdfData) => {
           const options = _optionPackage.options
             .filter((_option) => _option.isSelected)
             .map((val) => `<div style="display: flex;">
-              <span style="min-width: 15px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">•</span>
-              <span style="padding-left: 5px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">${val.name} 
+              <span style="min-width: 15px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 10px; line-height: 28px; letter-spacing: 0; color: #363C45;">•</span>
+              <span style="padding-left: 5px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">${val.name} 
                 ${val.discountPrice ? `
-                  <span style="position: relative; display: inline-block; color: #808080; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px; margin-right: 4px;">
+                  <span style="position: relative; display: inline-block; color: #808080; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 10px; line-height: 28px; margin-right: 4px;">
                     ${formatPrice(Number(val.price))},-
                     <span style="position: absolute; left: 0; right: 0; top: 75%; height: 1.5px; background-color: #808080; transform: translateY(-50%);"></span>
                   </span>
@@ -183,7 +183,7 @@ export const htmlTemplate = (data: PdfData) => {
                     ${val.discountEndDate ? `<span style="font-style: italic;">(Kampanje ${formatDate(val.discountEndDate)})</span>` : ''}
                   </span>
                 ` : `
-                  <span style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; line-height: 28px;">
+                  <span style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 10px; line-height: 28px;">
                     ${formatPrice(Number(val.price))},-
                   </span>
                 `}
@@ -194,7 +194,7 @@ export const htmlTemplate = (data: PdfData) => {
           return `<div style="border-bottom: 1px solid #eee; padding: 15px 10px; page-break-inside: avoid; page-break-before: auto; margin-top: 20px;">
             <div style="display: flex; justify-content: space-between;">
               <div style="width: 50%; text-align: left;">
-                <p style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; line-height: 28px; letter-spacing: 0; color: #363C45;">${_optionPackage.name}</p>
+                <p style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">${_optionPackage.name}</p>
                 <div style="margin: 8px 0 0 0; padding: 0;">
                   ${options}
                 </div>

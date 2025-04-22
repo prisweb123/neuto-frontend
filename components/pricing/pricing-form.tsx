@@ -11,7 +11,6 @@ const transformToPackageOption = (product: Product) => ({
   id: product._id,
   title: product.name,
   description: product.description,
-  image: `${BASE_URL}/packages/image/${product._id}`,
   price: product.price,
   discount: product.discount,
   endDate: product.endDate,

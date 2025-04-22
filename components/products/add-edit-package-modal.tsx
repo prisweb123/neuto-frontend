@@ -20,7 +20,6 @@ interface AddEditPackageModalProps {
   initialData?: {
     name: string
     description: string
-    image: string
     markeModels: MarkeModelPair[]
     price: string
     discount: string
@@ -37,7 +36,6 @@ export default function AddEditPackageModal({
   initialData = {
     name: "",
     description: "",
-    image: "",
     markeModels: [],
     price: "",
     discount: "",
@@ -49,7 +47,6 @@ export default function AddEditPackageModal({
   const [name, setName] = useState(initialData.name)
   const [description, setDescription] = useState(initialData.description)
   const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState(initialData.image)
   const [markeModels, setMarkeModels] = useState<MarkeModelPair[]>(initialData.markeModels)
   const [price, setPrice] = useState(initialData.price)
   const [discount, setDiscount] = useState(initialData.discount)
@@ -72,7 +69,6 @@ export default function AddEditPackageModal({
     if (isOpen) {
       setName(initialData.name)
       setDescription(initialData.description)
-      setImagePreview(initialData.image)
       setMarkeModels(initialData.markeModels)
       setPrice(initialData.price)
       setDiscount(initialData.discount)
@@ -86,7 +82,7 @@ export default function AddEditPackageModal({
   const [error, setError] = useState<string>('')
   const validateForm = () => {
     let newError = ""
-    if (!name || !price || (!imageFile && !imagePreview) || !price || markeModels.length === 0) {
+    if (!name || !price || markeModels.length === 0) {
       newError = "Vennligst fyll ut felt som mangler"
     } else if (Number(price) < 0) {
       newError = "Price cannot be negative"
@@ -123,17 +119,6 @@ export default function AddEditPackageModal({
     onSave(formData)
   }
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setImageFile(file)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
 
   const handlePrevMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))
@@ -193,31 +178,6 @@ export default function AddEditPackageModal({
               />
             </div>
 
-            {/* Product Picture */}
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Bilde</label>
-              <div className="border border-gray-300 rounded-md p-2 w-40 h-28 flex items-center justify-center">
-                {imagePreview ? (
-                  <div className="relative w-full h-full">
-                    <Image src={imagePreview || "/placeholder.svg"} alt="Product" fill className="object-cover rounded" />
-                    <button
-                      onClick={() => {
-                        setImageFile(null);
-                        setImagePreview("")
-                      }}
-                      className="absolute top-1 right-1 bg-white rounded-full p-1 shadow-sm"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ) : (
-                  <label className="cursor-pointer flex flex-col items-center justify-center w-full h-full">
-                    <Plus className="h-8 w-8 text-gray-400" />
-                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-                  </label>
-                )}
-              </div>
-            </div>
 
             {/* Information Section */}
             <div>

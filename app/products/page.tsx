@@ -205,7 +205,6 @@ export default function ProductsPage() {
                 key={product._id}
                 name={product.name}
                 description={product.description}
-                image={`${BASE_URL}/packages/image/${product._id}`}
                 price={product.price}
                 discount={product.discount}
                 include={product.include}
@@ -253,7 +252,6 @@ export default function ProductsPage() {
             ? {
               name: editingPackage.name,
               description: editingPackage.description || "",
-              image: `${BASE_URL}/packages/image/${editingPackage._id}`,
               markeModels: editingPackage.markeModels || [],
               price: editingPackage.price.toString(),
               discount: editingPackage.discount

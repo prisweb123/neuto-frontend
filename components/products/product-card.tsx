@@ -8,7 +8,6 @@ import { useMemo } from "react"
 interface ProductCardProps {
   name: string
   description: string
-  image: string
   price: number
   discount?: number
   campaign?: string
@@ -21,7 +20,6 @@ interface ProductCardProps {
 export default function ProductCard({
   name,
   description,
-  image,
   price,
   discount,
   campaign,
@@ -44,15 +42,6 @@ export default function ProductCard({
   return (
     <div className="bg-white rounded-lg border p-6 relative">
       <div className="flex mb-4">
-        <div className="w-16 h-16 rounded-md overflow-hidden mr-4 flex-shrink-0">
-          <Image
-            src={image || "/placeholder.svg"}
-            alt={name}
-            width={64}
-            height={64}
-            className="object-cover w-full h-full"
-          />
-        </div>
         <div className="flex-1">
           <div className="flex justify-between">
             <div>

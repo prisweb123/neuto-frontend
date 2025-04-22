@@ -8,7 +8,6 @@ interface PackageOption {
   id: string
   title: string
   description?: string
-  image: string
   price: number
   discount?: number
   endDate?: string
@@ -83,15 +82,6 @@ export default function PackageDropdown({ options, value, onChange, label }: Pac
           {selectedOption ? (
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center">
-                <div className="w-10 h-10 rounded-md overflow-hidden mr-3 flex-shrink-0">
-                  <Image
-                    src={selectedOption.image || "/placeholder.svg"}
-                    alt={selectedOption.title}
-                    width={40}
-                    height={40}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
                 <div>
                   <div className="font-medium">{selectedOption.title}</div>
                 </div>
@@ -135,15 +125,6 @@ export default function PackageDropdown({ options, value, onChange, label }: Pac
                     }}
                   >
                     <div className="flex flex-row justify-start md:mr-6 w-full md:w-auto">
-                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 bg-gray-50">
-                        <Image
-                          src={option.image || "/placeholder.svg"}
-                          alt={option.title}
-                          width={64}
-                          height={64}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
                       <div>
                         <div className="text-lg md:text-xl font-medium">{option.title}</div>
                         {option.description && (
