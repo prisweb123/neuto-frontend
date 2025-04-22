@@ -37,7 +37,7 @@ export default function OfferPage() {
   // Filter offers based on search query
   const filteredOffers = offers.filter(
     (offer) =>
-      offer.createdBy.username.toLowerCase().includes(searchQuery.toLowerCase()) || offer.info.toLowerCase().includes(searchQuery.toLowerCase()) || offer.offerNo.toString().toLowerCase().includes(searchQuery.toLowerCase()),
+      offer.createdBy?.username.toLowerCase().includes(searchQuery.toLowerCase()) || offer.info.toLowerCase().includes(searchQuery.toLowerCase()) || offer.offerNo.toString().toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
   // Calculate pagination

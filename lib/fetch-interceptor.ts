@@ -10,7 +10,7 @@ interface ApiResponse<T = any> {
     success: boolean
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 export async function fetchWithInterceptor<T>(
     endpoint: string,

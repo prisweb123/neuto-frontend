@@ -8,6 +8,8 @@ import AddEditOptionsModal from "@/components/products/add-edit-options-modal"
 import OptionProductCard from "@/components/products/option-product-card"
 import { fetchWithInterceptor } from "@/lib/fetch-interceptor"
 import { formatDate } from "@/lib/utils"
+import { BASE_URL } from "@/lib/fetch-interceptor"
+
 
 interface OptionItem {
   id: string
@@ -203,7 +205,7 @@ export default function ProductsPage() {
                 key={product._id}
                 name={product.name}
                 description={product.description}
-                image={product.image}
+                image={`${BASE_URL}/packages/image/${product._id}`}
                 price={product.price}
                 discount={product.discount}
                 include={product.include}
@@ -251,7 +253,7 @@ export default function ProductsPage() {
             ? {
               name: editingPackage.name,
               description: editingPackage.description || "",
-              image: editingPackage.image,
+              image: `${BASE_URL}/packages/image/${editingPackage._id}`,
               markeModels: editingPackage.markeModels || [],
               price: editingPackage.price.toString(),
               discount: editingPackage.discount

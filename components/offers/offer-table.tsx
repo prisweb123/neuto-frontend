@@ -23,7 +23,7 @@ export default function OfferTable({ offers, onDelete }: OfferTableProps) {
             <tr key={offer._id} className="border-b hover:bg-gray-50">
               <td className="py-4">{offer.offerNo}</td>
               <td className="py-4">{offer.info}</td>
-              <td className="py-4">{offer.createdBy.username}</td>
+              <td className="py-4">{offer.createdBy?.username}</td>
               <td className="py-4">
                 <OfferActions
                   offer={offer}

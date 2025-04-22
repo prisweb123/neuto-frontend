@@ -5,12 +5,13 @@ import { ChevronDown, HelpCircle } from "lucide-react"
 import PackageDropdown from "./package-dropdown"
 import { fetchWithInterceptor } from "@/lib/fetch-interceptor"
 import { OptionProduct, Product } from "./type"
+import { BASE_URL } from "@/lib/fetch-interceptor"
 
 const transformToPackageOption = (product: Product) => ({
   id: product._id,
   title: product.name,
   description: product.description,
-  image: product.image || "/images/package-1.png",
+  image: `${BASE_URL}/packages/image/${product._id}`,
   price: product.price,
   discount: product.discount,
   endDate: product.endDate,
