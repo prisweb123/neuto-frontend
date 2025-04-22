@@ -90,9 +90,9 @@ export default function OfferActions({ offer, onDelete }: OfferActionsProps) {
         >
           <Printer className="h-5 w-5" />
         </button>
-        <button className="text-gray-400 hover:text-gray-600" onClick={handleCopy} aria-label="Copy offer">
+        {/* <button className="text-gray-400 hover:text-gray-600" onClick={handleCopy} aria-label="Copy offer">
           <Copy className="h-5 w-5" />
-        </button>
+        </button> */}
       </div>
     </>
   )
