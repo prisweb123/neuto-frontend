@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: 'Netauto',
-  description: 'Netauto Application',
+  title: 'MErhebia',
+  description: 'MErhebia Application',
   generator: 'v0.dev'
 }
 
