@@ -129,9 +129,9 @@ export default function AddEditPackageModal({
   }
 
   const handleSelectDate = (day: number) => {
-    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
-    setEndDate(date.toLocaleDateString())
-    setShowCalendar(false)
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    setEndDate(date.toISOString().split('T')[0]); // Always in ISO format
+    setShowCalendar(false);
   }
 
   if (!isOpen) return null
