@@ -101,13 +101,14 @@ export const htmlTemplate = (data: PdfData) => {
     </div>`;
   };
 
-  return `<div style="font-family: Arial, sans-serif; margin: 0; padding: 0 30px 30px; color: #333; max-width: 900px; margin: 0 auto; font-size: 10px; line-height: 1.2;">
+  return `<div style="font-family: Arial, sans-serif; margin: 0; padding: 0 30px 30px; color: #333; max-width: 900px; margin: 0 auto; font-size: 10px; line-height: 1.2; min-height: 293mm; display: flex; justify-content: space-between; flex-direction: column; height: 100%;">
     <style>
       @font-face {
         font-family: 'Josefin Sans';
         src: url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap');
       }
     </style>
+    <div style="margin-bottom: 20px;">
     <header style="display: flex; justify-content: space-between; margin-bottom: 50px; page-break-inside: avoid;">
       <div style="width: 50%;">
         <div style="width: 180px; margin-bottom: 15px;">
@@ -221,10 +222,10 @@ export const htmlTemplate = (data: PdfData) => {
       
       ${data.manualProducts
         .map(
-          (_product) => `<div style="padding: 15px 10px; page-break-inside: avoid; page-break-before: auto; margin-top: 20px;">
+          (_product) => `<div style="padding: 0px 10px; page-break-inside: avoid; page-break-before: auto; margin-top: 5px;">
             <div style="display: flex; justify-content: space-between;">
               <div style="width: 50%; text-align: left;">
-                <p style="margin: 0; font-weight: bold; font-size: 16px; font-family: 'Inter', sans-serif;">${_product.name}</p>
+                <p style="margin: 0; font-weight: bold; font-size: 12px; font-family: 'Inter', sans-serif;">${_product.name}</p>
                 <p style="margin: 4px 0; font-style: italic; color: #333; font-size: 11px; font-family: 'Inter', sans-serif;">${_product.description}</p>
               </div>
               <div style="width: 15%; text-align: right; font-family: 'Inter', sans-serif;">${formatPrice(_product.discount || 0)},-</div>
@@ -238,8 +239,8 @@ export const htmlTemplate = (data: PdfData) => {
         )
         .join("")}
     </div>
-    
-    <div style="display: flex; margin-top: 70px; margin-left: 20px; margin-right: 20px; font-size: 14px; page-break-inside: avoid; page-break-before: auto; padding-top: 30px;">
+    </div>
+    <div style="display: flex; margin-left: 20px; margin-right: 20px; font-size: 14px; page-break-inside: avoid; page-break-before: auto;">
       <div style="width: 60%; padding-right: 20px;">
         ${data.terms ? `
         <div style="background-color: #FBFCFE; padding: 20px; border-radius: 16px; border: 1px solid #EFF2F5;">
