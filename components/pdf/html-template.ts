@@ -243,7 +243,7 @@ export const htmlTemplate = (data: PdfData) => {
     <div style="display: flex; margin-left: 20px; margin-right: 20px; font-size: 14px; page-break-inside: avoid; page-break-before: auto;">
       <div style="width: 60%; padding-right: 20px;">
         ${data.terms ? `
-        <div style="background-color: #D1D1D1; padding: 20px; border-radius: 16px; border: 1px solid #EFF2F5;">
+        <div style="padding: 20px; border-radius: 16px; border: 1px solid #EFF2F5;">
           <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 400; line-height: 10px; letter-spacing: 0px; color: black !important;">${safeString(data.terms)}</p>
         </div>
         ` : ''}
