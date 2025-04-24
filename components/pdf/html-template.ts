@@ -69,7 +69,7 @@ export const htmlTemplate = (data: PdfData) => {
   };
 
   return `
-    <div style="font-family: Arial, sans-serif; font-size: 10px; color: #333; line-height: 1.2; max-width: 900px; margin: auto; padding: 0 30px; display: flex; flex-direction: column; box-sizing: border-box; min-height: 100vh;">
+    <div style="font-family: Arial, sans-serif; font-size: 10px; color: #333; line-height: 1.2; max-width: 900px; margin: auto; padding: 0 30px; display: flex; flex-direction: column; box-sizing: border-box; height: calc(297mm - 20px);">
       <div>
         <header style="display: flex; justify-content: space-between; margin-bottom: 50px; page-break-inside: avoid;">
           <div style="width: 50%;">
@@ -110,8 +110,8 @@ export const htmlTemplate = (data: PdfData) => {
 
         <h1 style="margin-top: -70px; font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 400; margin-bottom: 30px;">Tilbud</h1>
 
-        <div style="margin-top: 20px;">
-          <div style="display: flex; justify-content: space-between; padding: 20px; background-color: rgba(241, 241, 241, 0.4); border-bottom: 1px solid #ddd;">
+        <div style="margin-top: 10px;">
+          <div style="display: flex; justify-content: space-between; padding: 10px; background-color: rgba(241, 241, 241, 0.4); border-bottom: 1px solid #ddd;">
             <div style="width: 50%; font-weight: 600;">Beskrivelse</div>
             <div style="width: 15%; text-align: right; font-weight: 600;">Rabatt</div>
             <div style="width: 15%; text-align: right; font-weight: 600;">MVA</div>
