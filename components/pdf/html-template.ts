@@ -44,8 +44,8 @@ export const htmlTemplate = (data: PdfData) => {
       .map((line: string) => line.replace(/^[•\s]+/, "").trim())
       .filter((line: string) => line.length > 0)
       .map((val: string) => `<div style="display: flex; margin: 4px 0;">
-        <span style="min-width: 15px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">•</span>
-        <span style="padding-left: 5px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; line-height: 28px; letter-spacing: 0; color: #363C45;">${val}</span>
+        <span style="min-width: 15px; text-align: center; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 10px; line-height: 10px; letter-spacing: 0; color: #363C45;">•</span>
+        <span style="padding-left: 5px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 10px; line-height: 10px; letter-spacing: 0; color: #363C45;">${val}</span>
       </div>`)
       .join("");
 
@@ -123,7 +123,7 @@ export const htmlTemplate = (data: PdfData) => {
         </div>
       </div>
       
-      <div style="width: 339px; height: 301px; text-align: left; background-color: #F8F8F8; padding: 20px; padding-left: 30px;">
+      <div style="width: 339px; height: 301px; text-align: left; background-color: #8c8c8c; padding: 20px; padding-left: 30px; border-radius: 0px 0px 10px 10px;">
         <p style="margin: 0 0 5px 0; font-weight: bold; font-size: 13px; margin-bottom: 15px; font-family: 'Inter', sans-serif;">Merhebia Finest AS</p>
         <p style="margin: 2px 0; font-family: 'Inter', sans-serif;">Vintergata 19</p>
         <p style="margin: 2px 0; font-family: 'Inter', sans-serif;">3048 Drammen</p>
@@ -243,29 +243,29 @@ export const htmlTemplate = (data: PdfData) => {
     <div style="display: flex; margin-left: 20px; margin-right: 20px; font-size: 14px; page-break-inside: avoid; page-break-before: auto;">
       <div style="width: 60%; padding-right: 20px;">
         ${data.terms ? `
-        <div style="background-color: #FBFCFE; padding: 20px; border-radius: 16px; border: 1px solid #EFF2F5;">
-          <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #363C45 !important;">${safeString(data.terms)}</p>
+        <div style="background-color: #a6a6a6; padding: 20px; border-radius: 16px; border: 1px solid #EFF2F5;">
+          <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 400; line-height: 10px; letter-spacing: 0px; color: black !important;">${safeString(data.terms)}</p>
         </div>
         ` : ''}
       </div>
       
       <div style="width: 40%; background-color: #FBFCFE; padding: 20px; border-radius: 16px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-          <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Rabatt ${data.discount}%</div>
-          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 500; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.additionalDiscount)},-</div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <div style="font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 0px; color: #737982;">Rabatt ${data.discount}%</div>
+          <div style="font-family: 'Inter'; font-size: 12px; font-weight: 500; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.additionalDiscount)},-</div>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Kampanje rabatt</div>
-          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 500; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.campaignDiscount)},-</div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <div style="font-family: 'Inter'; font-size: 12px; font-weight: 400;  letter-spacing: 0px; color: #737982;">Kampanje rabatt</div>
+          <div style="font-family: 'Inter'; font-size: 12px; font-weight: 500;  letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.campaignDiscount)},-</div>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 400; line-height: 24px; letter-spacing: 0px; color: #737982;">Mva 25 %</div>
-          <div style="font-family: 'Inter'; font-size: 14px; font-weight: 500; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.VatValue)},-</div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <div style="font-family: 'Inter'; font-size: 12px; font-weight: 400; letter-spacing: 0px; color: #737982;">Mva 25 %</div>
+          <div style="font-family: 'Inter'; font-size: 12px; font-weight: 500; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.VatValue)},-</div>
         </div>
         <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; margin: 16px 0;"></div>
         <div style="display: flex; justify-content: space-between;">
-          <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; line-height: 24px; letter-spacing: 0px; color: #363C45;">Å Betale</div>
-          <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; line-height: 24px; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.total)},-</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0px; color: #363C45;">Å Betale</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.total)},-</div>
         </div>
         <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; margin: 16px 0;"></div>
       </div>
