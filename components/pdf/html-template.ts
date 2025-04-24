@@ -123,7 +123,7 @@ export const htmlTemplate = (data: PdfData) => {
         </div>
       </div>
       
-      <div style="width: 339px; height: 301px; text-align: left; background-color: #8c8c8c; padding: 20px; padding-left: 30px; border-radius: 0px 0px 10px 10px;">
+      <div style="width: 339px; height: 301px; text-align: left; background-color: #D1D1D1; padding: 20px; padding-left: 30px; border-radius: 0px 0px 10px 10px;">
         <p style="margin: 0 0 5px 0; font-weight: bold; font-size: 13px; margin-bottom: 15px; font-family: 'Inter', sans-serif;">Merhebia Finest AS</p>
         <p style="margin: 2px 0; font-family: 'Inter', sans-serif;">Vintergata 19</p>
         <p style="margin: 2px 0; font-family: 'Inter', sans-serif;">3048 Drammen</p>
@@ -157,7 +157,7 @@ export const htmlTemplate = (data: PdfData) => {
     </div>
     
     <div style="margin-top: 20px;">
-      <div style="display: flex; justify-content: space-between; padding: 20px 20px 12px 20px; background-color: rgba(241, 241, 241, 0.4); border-bottom: 1px solid #ddd;">
+      <div style="display: flex; justify-content: space-between; padding: 0px 20px 12px 20px; background-color: rgba(241, 241, 241, 0.4); border-bottom: 1px solid #ddd;">
         <div style="width: 50%; text-align: left; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; line-height: 24px; letter-spacing: 0px; color: #363C45;">Beskrivelse</div>
         <div style="width: 15%; text-align: right; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; line-height: 24px; letter-spacing: 0px; color: #363C45;">Rabatt</div>
         <div style="width: 15%; text-align: right; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; line-height: 24px; letter-spacing: 0px; color: #363C45;">MVA</div>
@@ -243,7 +243,7 @@ export const htmlTemplate = (data: PdfData) => {
     <div style="display: flex; margin-left: 20px; margin-right: 20px; font-size: 14px; page-break-inside: avoid; page-break-before: auto;">
       <div style="width: 60%; padding-right: 20px;">
         ${data.terms ? `
-        <div style="background-color: #a6a6a6; padding: 20px; border-radius: 16px; border: 1px solid #EFF2F5;">
+        <div style="background-color: #D1D1D1; padding: 20px; border-radius: 16px; border: 1px solid #EFF2F5;">
           <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 400; line-height: 10px; letter-spacing: 0px; color: black !important;">${safeString(data.terms)}</p>
         </div>
         ` : ''}
@@ -262,12 +262,12 @@ export const htmlTemplate = (data: PdfData) => {
           <div style="font-family: 'Inter'; font-size: 12px; font-weight: 400; letter-spacing: 0px; color: #737982;">Mva 25 %</div>
           <div style="font-family: 'Inter'; font-size: 12px; font-weight: 500; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.VatValue)},-</div>
         </div>
-        <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; margin: 16px 0;"></div>
-        <div style="display: flex; justify-content: space-between;">
+        <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; "></div>
+        <div style="display: flex; justify-content: space-between; padding: 10px 0px; background-color: #D1D1D1;">
           <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0px; color: #363C45;">Å Betale</div>
           <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.total)},-</div>
         </div>
-        <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; margin: 16px 0;"></div>
+        <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; "></div>
       </div>
     </div>
   </div>`;
