@@ -249,7 +249,7 @@ export const htmlTemplate = (data: PdfData) => {
         ` : ''}
       </div>
       
-      <div style="width: 40%; background-color: #FBFCFE; padding: 20px; border-radius: 16px;">
+      <div style="width: 40%; padding: 20px; border-radius: 16px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
           <div style="font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 0px; color: #737982;">Rabatt ${data.discount}%</div>
           <div style="font-family: 'Inter'; font-size: 12px; font-weight: 500; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.additionalDiscount)},-</div>
@@ -263,7 +263,7 @@ export const htmlTemplate = (data: PdfData) => {
           <div style="font-family: 'Inter'; font-size: 12px; font-weight: 500; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.VatValue)},-</div>
         </div>
         <div style="border-top: 1px solid #363C45; border-bottom: 1px solid #363C45; "></div>
-        <div style="display: flex; justify-content: space-between; padding: 10px 0px; background-color: #D1D1D1;">
+        <div style="display: flex; justify-content: space-between; padding: 10px 0px;">
           <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0px; color: #363C45;">Å Betale</div>
           <div style="font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0px; color: #363C45; text-align: right;">${formatPrice(data.total)},-</div>
         </div>
