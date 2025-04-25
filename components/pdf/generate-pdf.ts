@@ -14,6 +14,7 @@ export const generatePricePdf = async (data: PdfData) => {
         element.innerHTML = htmlTemplate(data);
         document.body.appendChild(element);
     
+        console.log("data");
         // Extract customer name from info (first line)
         const customerName = data.info.split('\n')[0].trim();
         const safeFileName = customerName.replace(/[^a-zA-Z0-9æøåÆØÅ\s-]/g, '_');
